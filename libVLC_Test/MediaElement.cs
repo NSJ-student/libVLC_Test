@@ -25,6 +25,7 @@ namespace libVLC_Test
         public MediaElement(string library_path)
         {
             InitializeComponent();
+            this.TopLevel = false;
 
             library = LibVLCLibrary.Load(library_path);
 

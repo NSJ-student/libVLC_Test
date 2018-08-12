@@ -33,13 +33,16 @@
             this.btnOpen = new System.Windows.Forms.Button();
             this.txtPath = new System.Windows.Forms.TextBox();
             this.pMediaElement = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnPlay
             // 
-            this.btnPlay.Location = new System.Drawing.Point(12, 413);
+            this.btnPlay.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnPlay.Location = new System.Drawing.Point(8, 412);
             this.btnPlay.Name = "btnPlay";
-            this.btnPlay.Size = new System.Drawing.Size(75, 25);
+            this.btnPlay.Size = new System.Drawing.Size(74, 39);
             this.btnPlay.TabIndex = 1;
             this.btnPlay.Text = "Play";
             this.btnPlay.UseVisualStyleBackColor = true;
@@ -47,9 +50,10 @@
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(93, 413);
+            this.btnStop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnStop.Location = new System.Drawing.Point(88, 412);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(75, 25);
+            this.btnStop.Size = new System.Drawing.Size(74, 39);
             this.btnStop.TabIndex = 2;
             this.btnStop.Text = "Stop";
             this.btnStop.UseVisualStyleBackColor = true;
@@ -57,9 +61,10 @@
             // 
             // btnOpen
             // 
-            this.btnOpen.Location = new System.Drawing.Point(713, 413);
+            this.btnOpen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnOpen.Location = new System.Drawing.Point(672, 412);
             this.btnOpen.Name = "btnOpen";
-            this.btnOpen.Size = new System.Drawing.Size(75, 25);
+            this.btnOpen.Size = new System.Drawing.Size(74, 39);
             this.btnOpen.TabIndex = 3;
             this.btnOpen.Text = "Open";
             this.btnOpen.UseVisualStyleBackColor = true;
@@ -67,32 +72,58 @@
             // 
             // txtPath
             // 
-            this.txtPath.Location = new System.Drawing.Point(202, 413);
+            this.txtPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPath.Location = new System.Drawing.Point(168, 419);
             this.txtPath.Name = "txtPath";
-            this.txtPath.Size = new System.Drawing.Size(505, 25);
+            this.txtPath.Size = new System.Drawing.Size(498, 25);
             this.txtPath.TabIndex = 4;
             // 
             // pMediaElement
             // 
-            this.pMediaElement.Location = new System.Drawing.Point(12, 12);
+            this.pMediaElement.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.tableLayoutPanel1.SetColumnSpan(this.pMediaElement, 4);
+            this.pMediaElement.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pMediaElement.Location = new System.Drawing.Point(8, 8);
             this.pMediaElement.Name = "pMediaElement";
-            this.pMediaElement.Size = new System.Drawing.Size(776, 395);
+            this.pMediaElement.Size = new System.Drawing.Size(738, 388);
             this.pMediaElement.TabIndex = 5;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 4;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel1.Controls.Add(this.btnPlay, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.pMediaElement, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.btnStop, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.txtPath, 2, 2);
+            this.tableLayoutPanel1.Controls.Add(this.btnOpen, 3, 2);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(10);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(5);
+            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(754, 459);
+            this.tableLayoutPanel1.TabIndex = 6;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.pMediaElement);
-            this.Controls.Add(this.txtPath);
-            this.Controls.Add(this.btnOpen);
-            this.Controls.Add(this.btnStop);
-            this.Controls.Add(this.btnPlay);
+            this.ClientSize = new System.Drawing.Size(754, 459);
+            this.Controls.Add(this.tableLayoutPanel1);
+            this.MinimumSize = new System.Drawing.Size(550, 250);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Media Player (libVLC)";
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -102,6 +133,7 @@
         private System.Windows.Forms.Button btnOpen;
         private System.Windows.Forms.TextBox txtPath;
         private System.Windows.Forms.Panel pMediaElement;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
     }
 }
 
