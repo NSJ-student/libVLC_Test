@@ -65,7 +65,28 @@ namespace libVLC_Test
         
         private void btnPlay_Click(object sender, EventArgs e)
         {
-            PlayMedia(list.CurrentPath);
+            if(txtPath.Text.Equals(""))
+            {
+                PlayMedia(list.CurrentPath);
+            }
+            else
+            {
+                PlayMedia(txtPath.Text);
+            }
+        }
+
+        private void btnPause_Click(object sender, EventArgs e)
+        {
+            if(element.State == MediaPlayerState.Playing)
+            {
+                element.Pause();
+                btnPause.Text = "Resume";
+            }
+            else if(element.State == MediaPlayerState.Paused)
+            {
+                element.Resume();
+                btnPause.Text = "Pause";
+            }
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -286,10 +307,12 @@ namespace libVLC_Test
                 lblTotalTime.Text = TotalTime.ToString(@"hh\:mm\:ss");
                 lblCurrTime.Text = element.Time.ToString(@"hh\:mm\:ss");
                 lblState.Text = element.strState;
+                btnPause.Text = "Pause";
 
                 if (!worker.IsBusy)
                     worker.RunWorkerAsync();
             }
         }
+
     }
 }

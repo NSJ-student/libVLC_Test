@@ -185,6 +185,18 @@ namespace libVLC_Test
             return true;
         }
 
+        public void Pause()
+        {
+            if(State == MediaPlayerState.Playing)
+                library.libvlc_media_player_pause(media_player);
+        }
+
+        public void Resume()
+        {
+            if(State == MediaPlayerState.Paused)
+                library.libvlc_media_player_play(media_player);
+        }
+
         public void Stop()
         {
             /* Stop playing */

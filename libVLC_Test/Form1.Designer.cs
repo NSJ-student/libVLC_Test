@@ -39,6 +39,7 @@
             this.tbVideoPosition = new System.Windows.Forms.TrackBar();
             this.lblTotalTime = new System.Windows.Forms.Label();
             this.btnFullScreen = new System.Windows.Forms.Button();
+            this.btnPause = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbVideoPosition)).BeginInit();
             this.SuspendLayout();
@@ -46,7 +47,7 @@
             // pMediaElement
             // 
             this.pMediaElement.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.tableLayoutPanel1.SetColumnSpan(this.pMediaElement, 4);
+            this.tableLayoutPanel1.SetColumnSpan(this.pMediaElement, 5);
             this.pMediaElement.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pMediaElement.Location = new System.Drawing.Point(8, 8);
             this.pMediaElement.Name = "pMediaElement";
@@ -55,7 +56,8 @@
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 4;
+            this.tableLayoutPanel1.ColumnCount = 5;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -63,13 +65,14 @@
             this.tableLayoutPanel1.Controls.Add(this.lblCurrTime, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.btnPlay, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.pMediaElement, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnStop, 1, 4);
-            this.tableLayoutPanel1.Controls.Add(this.txtPath, 2, 4);
-            this.tableLayoutPanel1.Controls.Add(this.btnOpen, 3, 4);
+            this.tableLayoutPanel1.Controls.Add(this.txtPath, 3, 4);
+            this.tableLayoutPanel1.Controls.Add(this.btnOpen, 4, 4);
             this.tableLayoutPanel1.Controls.Add(this.lblState, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.tbVideoPosition, 2, 2);
-            this.tableLayoutPanel1.Controls.Add(this.lblTotalTime, 3, 2);
+            this.tableLayoutPanel1.Controls.Add(this.lblTotalTime, 4, 2);
             this.tableLayoutPanel1.Controls.Add(this.btnFullScreen, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.btnStop, 2, 4);
+            this.tableLayoutPanel1.Controls.Add(this.btnPause, 1, 4);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(10);
@@ -109,7 +112,7 @@
             // btnStop
             // 
             this.btnStop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnStop.Location = new System.Drawing.Point(88, 462);
+            this.btnStop.Location = new System.Drawing.Point(168, 462);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(74, 29);
             this.btnStop.TabIndex = 2;
@@ -120,9 +123,9 @@
             // txtPath
             // 
             this.txtPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPath.Location = new System.Drawing.Point(168, 464);
+            this.txtPath.Location = new System.Drawing.Point(248, 464);
             this.txtPath.Name = "txtPath";
-            this.txtPath.Size = new System.Drawing.Size(555, 25);
+            this.txtPath.Size = new System.Drawing.Size(475, 25);
             this.txtPath.TabIndex = 4;
             // 
             // btnOpen
@@ -149,6 +152,7 @@
             // 
             // tbVideoPosition
             // 
+            this.tableLayoutPanel1.SetColumnSpan(this.tbVideoPosition, 2);
             this.tbVideoPosition.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbVideoPosition.Location = new System.Drawing.Point(168, 422);
             this.tbVideoPosition.Maximum = 10000;
@@ -180,6 +184,17 @@
             this.btnFullScreen.UseVisualStyleBackColor = true;
             this.btnFullScreen.Click += new System.EventHandler(this.btnFullScreen_Click);
             // 
+            // btnPause
+            // 
+            this.btnPause.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnPause.Location = new System.Drawing.Point(88, 462);
+            this.btnPause.Name = "btnPause";
+            this.btnPause.Size = new System.Drawing.Size(74, 29);
+            this.btnPause.TabIndex = 10;
+            this.btnPause.Text = "Pause";
+            this.btnPause.UseVisualStyleBackColor = true;
+            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -208,6 +223,7 @@
         private System.Windows.Forms.Label lblCurrTime;
         private System.Windows.Forms.Label lblTotalTime;
         private System.Windows.Forms.Button btnFullScreen;
+        private System.Windows.Forms.Button btnPause;
     }
 }
 
