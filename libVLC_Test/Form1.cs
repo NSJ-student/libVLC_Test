@@ -25,6 +25,7 @@ namespace libVLC_Test
     {
         BackgroundWorker worker;
         MyMediaElement element;
+        MyMediaList list;
 
         int TotalTime_Pre;
         int CurrentPercent_Pre;
@@ -54,47 +55,17 @@ namespace libVLC_Test
             element.Dock = DockStyle.Fill;
             element.SetNormalModeCallBack(setNormalScreen);
 
+            list = new MyMediaList();
+            list.SetPlayCallBack(PlayMedia);
+            list.Hide();
+
             tbVideoPosition.Maximum = 10000;
             VideoPositionStart = false;
         }
         
         private void btnPlay_Click(object sender, EventArgs e)
         {
-            if((element.State == MediaPlayerState.Playing) ||
-                (element.State == MediaPlayerState.Paused))
-            {
-                element.Stop();
-            }
-            element.SetUri(txtPath.Text);
-
-            if(element.Play())
-            {
-                tbVideoPosition.Value = 0;
-                
-                TotalTime = element.Length;
-                if(element.Length.TotalSeconds != 0)
-                {
-                    CurrentPercent = tbVideoPosition.Maximum
-                        * Convert.ToInt32(element.Time.TotalSeconds)
-                        / Convert.ToInt32(element.Length.TotalSeconds);
-                }
-                else
-                {
-                    CurrentPercent = 0;
-                }
-                State = element.State;
-
-                TotalTime_Pre = Convert.ToInt32(TotalTime.TotalSeconds);
-                CurrentPercent_Pre = 0;
-                State_Pre = State;
-
-                lblTotalTime.Text = TotalTime.ToString(@"hh\:mm\:ss");
-                lblCurrTime.Text = element.Time.ToString(@"hh\:mm\:ss");
-                lblState.Text = element.strState;
-
-                if (!worker.IsBusy)
-                    worker.RunWorkerAsync();
-            }
+            PlayMedia(list.CurrentPath);
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -105,12 +76,22 @@ namespace libVLC_Test
 
         private void btnOpen_Click(object sender, EventArgs e)
         {
+            /*
             OpenFileDialog dialog = new OpenFileDialog();
 
             if(dialog.ShowDialog() == DialogResult.OK)
             {
                 string path = dialog.FileName;
                 txtPath.Text = path;
+            }
+            */
+            if(list.Visible)
+            {
+                list.Hide();
+            }
+            else
+            {
+                list.Show();
             }
         }
 
@@ -265,6 +246,49 @@ namespace libVLC_Test
                 element.WindowState = FormWindowState.Normal;
                 element.TopLevel = false;
                 pMediaElement.Controls.Add(element);
+            }
+        }
+
+        public void PlayMedia(string fullPath)
+        {
+            txtPath.Text = fullPath;
+
+            if (!element.SetUri(fullPath))
+                return;
+            
+            if ((element.State == MediaPlayerState.Playing) ||
+                (element.State == MediaPlayerState.Paused))
+            {
+                element.Stop();
+            }
+
+            if (element.Play())
+            {
+                tbVideoPosition.Value = 0;
+
+                TotalTime = element.Length;
+                if (element.Length.TotalSeconds != 0)
+                {
+                    CurrentPercent = tbVideoPosition.Maximum
+                        * Convert.ToInt32(element.Time.TotalSeconds)
+                        / Convert.ToInt32(element.Length.TotalSeconds);
+                }
+                else
+                {
+                    CurrentPercent = 0;
+                }
+                State = element.State;
+
+                TotalTime_Pre = Convert.ToInt32(TotalTime.TotalSeconds);
+                CurrentPercent_Pre = 0;
+                State_Pre = State;
+
+                lblTotalTime.Text = TotalTime.ToString(@"hh\:mm\:ss");
+                lblCurrTime.Text = element.Time.ToString(@"hh\:mm\:ss");
+                lblState.Text = element.strState;
+
+                if (!worker.IsBusy)
+                    worker.RunWorkerAsync();
             }
         }
     }

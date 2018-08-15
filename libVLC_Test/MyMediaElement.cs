@@ -147,12 +147,17 @@ namespace libVLC_Test
             normalWindowCallback = null;
         }
 
-        public void SetUri(string path)
+        public bool SetUri(string path)
         {
             if (path == null || path.Equals(""))
-                return;
+                return false;
 
             media_path = new Uri(path);
+
+            if (media_path == null)
+                return false;
+            else
+                return true;
         }
 
         public bool Play()

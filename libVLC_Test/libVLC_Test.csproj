@@ -64,6 +64,12 @@
     <Compile Include="MyMediaElement.Designer.cs">
       <DependentUpon>MyMediaElement.cs</DependentUpon>
     </Compile>
+    <Compile Include="MyMediaList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MyMediaList.Designer.cs">
+      <DependentUpon>MyMediaList.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -71,6 +77,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MyMediaElement.resx">
       <DependentUpon>MyMediaElement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MyMediaList.resx">
+      <DependentUpon>MyMediaList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
