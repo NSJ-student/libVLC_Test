@@ -8,36 +8,98 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows;
+using System.Threading;
 using System.Windows.Interop;
 using LibVLC.NET;
 using LibVLC.NET.Presentation;
 
 namespace libVLC_Test
 {
+    enum ProgressUpdate
+    {
+        TotalUpdate = 1,
+        CurrentUpdate = 2,
+        StateUpdate = 4
+    }
     public partial class Form1 : Form
     {
-        MediaElement element;
-        
+        BackgroundWorker worker;
+        MyMediaElement element;
+
+        int TotalTime_Pre;
+        int CurrentPercent_Pre;
+        MediaPlayerState State_Pre;
+
+        TimeSpan TotalTime;
+        int CurrentPercent;
+        MediaPlayerState State;
+
+        int VideoPosition_Pre;
+        bool VideoPositionStart;
+
         public Form1()
         {
             InitializeComponent();
-
-            element = new MediaElement("D:\\MyData\\backup\\study\\library\\vlc-3.0.3");
-
+            
+            worker = new BackgroundWorker();
+            worker.WorkerReportsProgress = true;
+            worker.WorkerSupportsCancellation = true;
+            worker.ProgressChanged += new ProgressChangedEventHandler(cb_ProgressChanged);
+            worker.DoWork += new DoWorkEventHandler(cb_DoWork);
+            worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(cb_RunWorkerCompleted);
+            
+            element = new MyMediaElement("D:\\MyData\\backup\\study\\library\\vlc-3.0.3");
             pMediaElement.Controls.Add(element);
             element.Show();
             element.Dock = DockStyle.Fill;
+            element.SetNormalModeCallBack(setNormalScreen);
+
+            tbVideoPosition.Maximum = 10000;
+            VideoPositionStart = false;
         }
         
         private void btnPlay_Click(object sender, EventArgs e)
         {
+            if((element.State == MediaPlayerState.Playing) ||
+                (element.State == MediaPlayerState.Paused))
+            {
+                element.Stop();
+            }
             element.SetUri(txtPath.Text);
 
-            element.Play();
+            if(element.Play())
+            {
+                tbVideoPosition.Value = 0;
+                
+                TotalTime = element.Length;
+                if(element.Length.TotalSeconds != 0)
+                {
+                    CurrentPercent = tbVideoPosition.Maximum
+                        * Convert.ToInt32(element.Time.TotalSeconds)
+                        / Convert.ToInt32(element.Length.TotalSeconds);
+                }
+                else
+                {
+                    CurrentPercent = 0;
+                }
+                State = element.State;
+
+                TotalTime_Pre = Convert.ToInt32(TotalTime.TotalSeconds);
+                CurrentPercent_Pre = 0;
+                State_Pre = State;
+
+                lblTotalTime.Text = TotalTime.ToString(@"hh\:mm\:ss");
+                lblCurrTime.Text = element.Time.ToString(@"hh\:mm\:ss");
+                lblState.Text = element.strState;
+
+                if (!worker.IsBusy)
+                    worker.RunWorkerAsync();
+            }
         }
 
         private void btnStop_Click(object sender, EventArgs e)
         {
+            worker.CancelAsync();
             element.Stop();
         }
 
@@ -49,6 +111,160 @@ namespace libVLC_Test
             {
                 string path = dialog.FileName;
                 txtPath.Text = path;
+            }
+        }
+
+        private void cb_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+
+            TotalTime_Pre = Convert.ToInt32(element.Length.TotalSeconds);
+            CurrentPercent_Pre = 0;
+            State_Pre = element.State;
+            
+            while(true)
+            {
+                int arg = 0;
+                TotalTime = element.Length;
+                if (element.Length.TotalSeconds != 0)
+                {
+                    CurrentPercent = tbVideoPosition.Maximum
+                        * Convert.ToInt32(element.Time.TotalSeconds)
+                        / Convert.ToInt32(element.Length.TotalSeconds);
+                }
+                else
+                {
+                    CurrentPercent = 0;
+                }
+                State = element.State;
+
+                if ((element.State == MediaPlayerState.Stopped) ||
+                    (element.State == MediaPlayerState.Error) ||
+                    (element.State == MediaPlayerState.Ended) ||
+                    (element.State == MediaPlayerState.NothingSpecial))
+                {
+                    break;
+                }
+
+                if (Convert.ToInt32(TotalTime.TotalSeconds) != TotalTime_Pre)
+                {
+                    arg |= (int)ProgressUpdate.TotalUpdate;
+                    TotalTime_Pre = Convert.ToInt32(TotalTime.TotalSeconds);
+                }
+                if (CurrentPercent != CurrentPercent_Pre)
+                {
+                    arg |= (int)ProgressUpdate.CurrentUpdate;
+                    CurrentPercent_Pre = CurrentPercent;
+                }
+                if (State != State_Pre)
+                {
+                    arg |= (int)ProgressUpdate.StateUpdate;
+                    State_Pre = State;
+                }
+
+                if(arg != 0)
+                {
+                    worker.ReportProgress(arg);
+                }
+
+                //CancellationPending 속성이 true로 set되었다면(위에서 CancelAsync 메소드 호출 시 true로 set된다고 하였죠?
+                if ((worker.CancellationPending == true))
+                {
+                    //루프를 break한다.(즉 스레드 run 핸들러를 벗어나겠죠)
+                    e.Cancel = true;
+                    break;
+                }
+
+                Thread.Sleep(500);
+            }
+        }
+
+        private void cb_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            ProgressUpdate arg = (ProgressUpdate)e.ProgressPercentage;
+
+            
+            if((arg & ProgressUpdate.TotalUpdate) == ProgressUpdate.TotalUpdate)
+            {
+                lblTotalTime.Text = TotalTime.ToString(@"hh\:mm\:ss");
+                tbVideoPosition.Maximum = Convert.ToInt32(TotalTime.TotalSeconds);
+            }
+
+            if ((arg & ProgressUpdate.CurrentUpdate) == ProgressUpdate.CurrentUpdate)
+            {
+                lblCurrTime.Text = element.Time.ToString(@"hh\:mm\:ss");
+                tbVideoPosition.Value = CurrentPercent;
+            }
+
+            if ((arg & ProgressUpdate.StateUpdate) == ProgressUpdate.StateUpdate)
+            {
+                lblState.Text = element.strState;
+            }
+        }
+
+        //스레드의 run함수가 종료될 경우 해당 핸들러가 호출됩니다.
+        private void cb_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            lblState.Text = element.strState;
+
+            //스레드가 종료한 이유(사용자 취소, 완료, 에러)에 맞쳐 처리하면 됩니다.
+            if ((e.Cancelled == true))
+            {
+                //this.tbProgress.Text = "Canceled!";
+            }
+
+            else if (!(e.Error == null))
+            {
+                //this.tbProgress.Text = ("Error: " + e.Error.Message);
+            }
+
+            else
+            {
+                //this.tbProgress.Text = "Done!";
+            }
+        }
+
+        private void tbVideoPosition_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (VideoPositionStart)
+            {
+                VideoPositionStart = false;
+                if(VideoPosition_Pre != tbVideoPosition.Value)
+                {
+                    element.Time = new TimeSpan(0,0,0,0, Convert.ToInt32(
+                        element.Length.TotalMilliseconds 
+                        * tbVideoPosition.Value
+                        / tbVideoPosition.Maximum));
+                }
+            }
+        }
+
+        private void tbVideoPosition_MouseDown(object sender, MouseEventArgs e)
+        {
+            if(element.State == MediaPlayerState.Playing)
+            {
+                VideoPositionStart = true;
+                VideoPosition_Pre = tbVideoPosition.Value;
+            }
+        }
+
+        private void btnFullScreen_Click(object sender, EventArgs e)
+        {
+            if(element.WindowState == FormWindowState.Normal)
+            {
+                pMediaElement.Controls.Remove(element);
+                element.TopLevel = true;
+                element.WindowState = FormWindowState.Maximized;
+            }
+        }
+
+        public void setNormalScreen()
+        {
+            if (element.WindowState == FormWindowState.Maximized)
+            {
+                element.WindowState = FormWindowState.Normal;
+                element.TopLevel = false;
+                pMediaElement.Controls.Add(element);
             }
         }
     }
