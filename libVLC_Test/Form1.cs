@@ -53,7 +53,7 @@ namespace libVLC_Test
             pMediaElement.Controls.Add(element);
             element.Show();
             element.Dock = DockStyle.Fill;
-            element.SetNormalModeCallBack(setNormalScreen);
+            element.SetFullScreenCallBack(setFullScreen);
 
             list = new MyMediaList();
             list.SetPlayCallBack(PlayMedia);
@@ -249,24 +249,20 @@ namespace libVLC_Test
                 VideoPosition_Pre = tbVideoPosition.Value;
             }
         }
-
-        private void btnFullScreen_Click(object sender, EventArgs e)
+        
+        public void setFullScreen(bool full)
         {
-            if(element.WindowState == FormWindowState.Normal)
-            {
-                pMediaElement.Controls.Remove(element);
-                element.TopLevel = true;
-                element.WindowState = FormWindowState.Maximized;
-            }
-        }
-
-        public void setNormalScreen()
-        {
-            if (element.WindowState == FormWindowState.Maximized)
+            if (!full && (element.WindowState == FormWindowState.Maximized))
             {
                 element.WindowState = FormWindowState.Normal;
                 element.TopLevel = false;
                 pMediaElement.Controls.Add(element);
+            }
+            else if (full && (element.WindowState == FormWindowState.Normal))
+            {
+                pMediaElement.Controls.Remove(element);
+                element.TopLevel = true;
+                element.WindowState = FormWindowState.Maximized;
             }
         }
 
@@ -314,5 +310,25 @@ namespace libVLC_Test
             }
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Space))
+            {
+                if (element.WindowState == FormWindowState.Maximized)
+                {
+                    element.WindowState = FormWindowState.Normal;
+                    element.TopLevel = false;
+                    pMediaElement.Controls.Add(element);
+                }
+                else if (element.WindowState == FormWindowState.Normal)
+                {
+                    pMediaElement.Controls.Remove(element);
+                    element.TopLevel = true;
+                    element.WindowState = FormWindowState.Maximized;
+                }
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
     }
 }

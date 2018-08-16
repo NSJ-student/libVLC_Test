@@ -38,6 +38,7 @@
             this.ClientSize = new System.Drawing.Size(644, 351);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.KeyPreview = true;
             this.Name = "MyMediaElement";
             this.Text = "MediaElement";
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.MyMediaElement_KeyPress);

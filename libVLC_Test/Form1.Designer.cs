@@ -32,13 +32,12 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.lblCurrTime = new System.Windows.Forms.Label();
             this.btnPlay = new System.Windows.Forms.Button();
-            this.btnStop = new System.Windows.Forms.Button();
             this.txtPath = new System.Windows.Forms.TextBox();
             this.btnOpen = new System.Windows.Forms.Button();
             this.lblState = new System.Windows.Forms.Label();
             this.tbVideoPosition = new System.Windows.Forms.TrackBar();
             this.lblTotalTime = new System.Windows.Forms.Label();
-            this.btnFullScreen = new System.Windows.Forms.Button();
+            this.btnStop = new System.Windows.Forms.Button();
             this.btnPause = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbVideoPosition)).BeginInit();
@@ -70,7 +69,6 @@
             this.tableLayoutPanel1.Controls.Add(this.lblState, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.tbVideoPosition, 2, 2);
             this.tableLayoutPanel1.Controls.Add(this.lblTotalTime, 4, 2);
-            this.tableLayoutPanel1.Controls.Add(this.btnFullScreen, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.btnStop, 2, 4);
             this.tableLayoutPanel1.Controls.Add(this.btnPause, 1, 4);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -108,17 +106,6 @@
             this.btnPlay.Text = "Play";
             this.btnPlay.UseVisualStyleBackColor = true;
             this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
-            // 
-            // btnStop
-            // 
-            this.btnStop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnStop.Location = new System.Drawing.Point(168, 462);
-            this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(74, 29);
-            this.btnStop.TabIndex = 2;
-            this.btnStop.Text = "Stop";
-            this.btnStop.UseVisualStyleBackColor = true;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
             // txtPath
             // 
@@ -174,15 +161,16 @@
             this.lblTotalTime.Text = "00:00:00";
             this.lblTotalTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnFullScreen
+            // btnStop
             // 
-            this.btnFullScreen.Location = new System.Drawing.Point(8, 412);
-            this.btnFullScreen.Name = "btnFullScreen";
-            this.btnFullScreen.Size = new System.Drawing.Size(74, 4);
-            this.btnFullScreen.TabIndex = 9;
-            this.btnFullScreen.Text = "Full";
-            this.btnFullScreen.UseVisualStyleBackColor = true;
-            this.btnFullScreen.Click += new System.EventHandler(this.btnFullScreen_Click);
+            this.btnStop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnStop.Location = new System.Drawing.Point(168, 462);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(74, 29);
+            this.btnStop.TabIndex = 2;
+            this.btnStop.Text = "Stop";
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
             // btnPause
             // 
@@ -201,6 +189,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(811, 499);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.KeyPreview = true;
             this.MinimumSize = new System.Drawing.Size(550, 250);
             this.Name = "Form1";
             this.Text = "Media Player (libVLC)";
@@ -222,7 +211,6 @@
         private System.Windows.Forms.TrackBar tbVideoPosition;
         private System.Windows.Forms.Label lblCurrTime;
         private System.Windows.Forms.Label lblTotalTime;
-        private System.Windows.Forms.Button btnFullScreen;
         private System.Windows.Forms.Button btnPause;
     }
 }

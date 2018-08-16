@@ -52,11 +52,11 @@ namespace libVLC_Test
         //     There has been an error opening a media.
         Error = 7
     }
-    public delegate void SetNormalForm();
+    public delegate void SetFullScreen(bool full);
 
     public partial class MyMediaElement : Form
     {
-        SetNormalForm normalWindowCallback;
+        SetFullScreen FullScreenCallback;
 
         LibVLCLibrary library;
         Uri media_path;
@@ -144,7 +144,7 @@ namespace libVLC_Test
             
             library.libvlc_media_player_set_hwnd(media_player, this.Handle);
 
-            normalWindowCallback = null;
+            FullScreenCallback = null;
         }
 
         public bool SetUri(string path)
@@ -203,18 +203,31 @@ namespace libVLC_Test
             library.libvlc_media_player_stop(media_player);
         }
 
-        public void SetNormalModeCallBack(SetNormalForm cb)
+        public void SetFullScreenCallBack(SetFullScreen cb)
         {
-            normalWindowCallback = cb;
+            FullScreenCallback = cb;
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Space))
+            {
+                if (WindowState == FormWindowState.Maximized)
+                    FullScreenCallback(false);
+                else if (WindowState == FormWindowState.Normal)
+                    FullScreenCallback(true);
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private void MyMediaElement_KeyPress(object sender, KeyPressEventArgs e)
         {
             if(e.KeyChar == (char)Keys.Escape)
             {
-                if (normalWindowCallback != null)
+                if (FullScreenCallback != null)
                 {
-                    normalWindowCallback();
+                    FullScreenCallback(false);
                 }
             }
         }
