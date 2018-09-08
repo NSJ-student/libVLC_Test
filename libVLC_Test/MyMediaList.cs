@@ -59,9 +59,9 @@ namespace libVLC_Test
         {
             if(lvPcList.SelectedItems.Count != 0)
             {
-                foreach(ListView.SelectedListViewItemCollection item  in lvPcList.SelectedItems)
+                foreach(ListViewItem item  in lvPcList.SelectedItems)
                 {
-                    //lvPcList.Items.Remove(item);
+                    lvPcList.Items.Remove(item);
                 }
                 
             }

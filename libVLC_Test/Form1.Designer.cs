@@ -193,6 +193,7 @@
             this.MinimumSize = new System.Drawing.Size(550, 250);
             this.Name = "Form1";
             this.Text = "Media Player (libVLC)";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbVideoPosition)).EndInit();

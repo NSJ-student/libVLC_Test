@@ -12,6 +12,8 @@ using System.Threading;
 using System.Windows.Interop;
 using LibVLC.NET;
 using LibVLC.NET.Presentation;
+using System.IO;
+using System.Xml.Linq;
 
 namespace libVLC_Test
 {
@@ -23,6 +25,7 @@ namespace libVLC_Test
     }
     public partial class Form1 : Form
     {
+        string libVLC_path;
         BackgroundWorker worker;
         MyMediaElement element;
         MyMediaList list;
@@ -41,15 +44,18 @@ namespace libVLC_Test
         public Form1()
         {
             InitializeComponent();
-            
+
+            libVLC_path = null;
+
             worker = new BackgroundWorker();
             worker.WorkerReportsProgress = true;
             worker.WorkerSupportsCancellation = true;
             worker.ProgressChanged += new ProgressChangedEventHandler(cb_ProgressChanged);
             worker.DoWork += new DoWorkEventHandler(cb_DoWork);
             worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(cb_RunWorkerCompleted);
-            
-            element = new MyMediaElement("D:\\MyData\\backup\\study\\library\\vlc-3.0.3");
+
+            string path = LoadInit();
+            element = new MyMediaElement(path);
             pMediaElement.Controls.Add(element);
             element.Show();
             element.Dock = DockStyle.Fill;
@@ -62,7 +68,65 @@ namespace libVLC_Test
             tbVideoPosition.Maximum = 10000;
             VideoPositionStart = false;
         }
-        
+
+        public string LoadInit()
+        {
+            try
+            {
+                if (File.Exists(".\\info.xml"))
+                {
+                    XElement root = XElement.Load("info.xml");
+                    XElement vlc_path = root.Element("libvlc");
+
+                    libVLC_path = vlc_path.Element("path").Value;
+                }
+                else
+                {
+                    libVLC_path = "D:\\MyData\\backup\\study\\library\\vlc-3.0.3";
+                }
+
+                return libVLC_path;
+            }
+            catch
+            {
+                libVLC_path = "D:\\MyData\\backup\\study\\library\\vlc-3.0.3";
+                return libVLC_path;
+            }
+        }
+
+        public bool SaveInit()
+        {
+            if (File.Exists(".\\info.xml"))
+            {
+                XElement root = XElement.Load("info.xml");
+                XElement path = root.Element("path");
+                XElement element;
+
+                if (path == null)
+                {
+                    path = new XElement("path", libVLC_path);
+                    root.Add(path);
+                }
+                else
+                {
+                    path.ReplaceWith(new XElement("path", libVLC_path));
+                }
+
+                root.Save("info.xml");
+            }
+            else
+            {
+                XElement root = new XElement("libvlc");
+                XElement path = new XElement("path", libVLC_path);
+                
+                root.Add(path);
+
+                root.Save("info.xml");
+            }
+
+            return true;
+        }
+
         private void btnPlay_Click(object sender, EventArgs e)
         {
             if(txtPath.Text.Equals(""))
@@ -329,6 +393,11 @@ namespace libVLC_Test
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SaveInit();
         }
     }
 }
