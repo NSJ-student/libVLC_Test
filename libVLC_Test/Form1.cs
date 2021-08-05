@@ -82,14 +82,16 @@ namespace libVLC_Test
                 }
                 else
                 {
-                    libVLC_path = "D:\\MyData\\backup\\study\\library\\vlc-3.0.3";
+//                    libVLC_path = "D:\\MyData\\backup\\study\\library\\vlc-3.0.3";
+                    libVLC_path = "..\\..\\vlc-3.0.4";
                 }
 
                 return libVLC_path;
             }
             catch
             {
-                libVLC_path = "D:\\MyData\\backup\\study\\library\\vlc-3.0.3";
+//                libVLC_path = "D:\\MyData\\backup\\study\\library\\vlc-3.0.3";
+                libVLC_path = "..\\..\\vlc-3.0.4";
                 return libVLC_path;
             }
         }

@@ -33,10 +33,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LibVLC.NET">
-      <HintPath>..\..\..\library\libvlcnet\sourceCode\sourceCode\branches\Visual Studio 11\LibVLC.NET.Presentation\bin\Debug\LibVLC.NET.dll</HintPath>
+      <HintPath>.\LibVLC.NET.dll</HintPath>
     </Reference>
     <Reference Include="LibVLC.NET.Presentation">
-      <HintPath>..\..\..\library\libvlcnet\sourceCode\sourceCode\branches\Visual Studio 11\LibVLC.NET.Presentation\bin\Debug\LibVLC.NET.Presentation.dll</HintPath>
+      <HintPath>.\LibVLC.NET.Presentation.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -102,6 +102,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
