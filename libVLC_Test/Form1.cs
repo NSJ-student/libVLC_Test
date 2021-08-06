@@ -50,7 +50,6 @@ namespace libVLC_Test
             worker = new BackgroundWorker();
             worker.WorkerReportsProgress = true;
             worker.WorkerSupportsCancellation = true;
-            worker.ProgressChanged += new ProgressChangedEventHandler(cb_ProgressChanged);
             worker.DoWork += new DoWorkEventHandler(cb_DoWork);
             worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(cb_RunWorkerCompleted);
 
@@ -76,9 +75,9 @@ namespace libVLC_Test
                 if (File.Exists(".\\info.xml"))
                 {
                     XElement root = XElement.Load("info.xml");
-                    XElement vlc_path = root.Element("libvlc");
+                    XElement vlc_path = root.Element("path");
 
-                    libVLC_path = vlc_path.Element("path").Value;
+                    libVLC_path = vlc_path.Value;
                 }
                 else
                 {
@@ -102,7 +101,6 @@ namespace libVLC_Test
             {
                 XElement root = XElement.Load("info.xml");
                 XElement path = root.Element("path");
-                XElement element;
 
                 if (path == null)
                 {
@@ -157,8 +155,14 @@ namespace libVLC_Test
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            worker.CancelAsync();
-            element.Stop();
+            if (worker.IsBusy)
+            {
+                worker.CancelAsync();
+            }
+            else
+            {
+                element.Stop();
+            }
         }
 
         private void btnOpen_Click(object sender, EventArgs e)
@@ -186,13 +190,17 @@ namespace libVLC_Test
         {
             BackgroundWorker worker = sender as BackgroundWorker;
 
+            int arg = 0;
             TotalTime_Pre = Convert.ToInt32(element.Length.TotalSeconds);
             CurrentPercent_Pre = 0;
             State_Pre = element.State;
-            
-            while(true)
+
+            arg |= (int)ProgressUpdate.TotalUpdate;
+            arg |= (int)ProgressUpdate.CurrentUpdate;
+            arg |= (int)ProgressUpdate.StateUpdate;
+
+            while (true)
             {
-                int arg = 0;
                 TotalTime = element.Length;
                 if (element.Length.TotalSeconds != 0)
                 {
@@ -232,7 +240,26 @@ namespace libVLC_Test
 
                 if(arg != 0)
                 {
-                    worker.ReportProgress(arg);
+                    this.Invoke(new Action(delegate () {
+                        tbVideoPosition.Value = CurrentPercent;
+
+                        if ((arg & (int)ProgressUpdate.TotalUpdate) == (int)ProgressUpdate.TotalUpdate)
+                        {
+                            lblTotalTime.Text = TotalTime.ToString(@"hh\:mm\:ss");
+                            tbVideoPosition.Maximum = Convert.ToInt32(TotalTime.TotalSeconds);
+                        }
+
+                        if ((arg & (int)ProgressUpdate.CurrentUpdate) == (int)ProgressUpdate.CurrentUpdate)
+                        {
+                            lblCurrTime.Text = element.Time.ToString(@"hh\:mm\:ss");
+                            tbVideoPosition.Value = CurrentPercent;
+                        }
+
+                        if ((arg & (int)ProgressUpdate.StateUpdate) == (int)ProgressUpdate.StateUpdate)
+                        {
+                            lblState.Text = element.strState;
+                        }
+                    }));
                 }
 
                 //CancellationPending 속성이 true로 set되었다면(위에서 CancelAsync 메소드 호출 시 true로 set된다고 하였죠?
@@ -247,36 +274,18 @@ namespace libVLC_Test
             }
         }
 
-        private void cb_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            ProgressUpdate arg = (ProgressUpdate)e.ProgressPercentage;
-
-            
-            if((arg & ProgressUpdate.TotalUpdate) == ProgressUpdate.TotalUpdate)
-            {
-                lblTotalTime.Text = TotalTime.ToString(@"hh\:mm\:ss");
-                tbVideoPosition.Maximum = Convert.ToInt32(TotalTime.TotalSeconds);
-            }
-
-            if ((arg & ProgressUpdate.CurrentUpdate) == ProgressUpdate.CurrentUpdate)
-            {
-                lblCurrTime.Text = element.Time.ToString(@"hh\:mm\:ss");
-                tbVideoPosition.Value = CurrentPercent;
-            }
-
-            if ((arg & ProgressUpdate.StateUpdate) == ProgressUpdate.StateUpdate)
-            {
-                lblState.Text = element.strState;
-            }
-        }
-
         //스레드의 run함수가 종료될 경우 해당 핸들러가 호출됩니다.
         private void cb_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            element.Stop();
+
             lblState.Text = element.strState;
+            tbVideoPosition.Value = 0;
+            lblCurrTime.Text  = "00:00:00";
+            lblTotalTime.Text = "00:00:00";
 
             //스레드가 종료한 이유(사용자 취소, 완료, 에러)에 맞쳐 처리하면 됩니다.
-            if ((e.Cancelled == true))
+            if (e.Cancelled == true)
             {
                 //this.tbProgress.Text = "Canceled!";
             }
@@ -285,9 +294,9 @@ namespace libVLC_Test
             {
                 //this.tbProgress.Text = ("Error: " + e.Error.Message);
             }
-
             else
             {
+                list.playNext(txtPath.Text);
                 //this.tbProgress.Text = "Done!";
             }
         }
@@ -399,6 +408,10 @@ namespace libVLC_Test
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if(worker.IsBusy)
+            {
+                worker.CancelAsync();
+            }
             SaveInit();
         }
     }

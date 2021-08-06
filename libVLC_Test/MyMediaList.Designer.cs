@@ -50,10 +50,11 @@
             this.tabMediaList.Controls.Add(this.tpStream);
             this.tabMediaList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabMediaList.ItemSize = new System.Drawing.Size(80, 50);
-            this.tabMediaList.Location = new System.Drawing.Point(5, 5);
+            this.tabMediaList.Location = new System.Drawing.Point(4, 4);
+            this.tabMediaList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabMediaList.Name = "tabMediaList";
             this.tabMediaList.SelectedIndex = 0;
-            this.tabMediaList.Size = new System.Drawing.Size(396, 511);
+            this.tabMediaList.Size = new System.Drawing.Size(347, 409);
             this.tabMediaList.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabMediaList.TabIndex = 0;
             // 
@@ -61,9 +62,10 @@
             // 
             this.tpLocalMedia.Controls.Add(this.tlpPcList);
             this.tpLocalMedia.Location = new System.Drawing.Point(4, 54);
+            this.tpLocalMedia.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tpLocalMedia.Name = "tpLocalMedia";
-            this.tpLocalMedia.Padding = new System.Windows.Forms.Padding(3);
-            this.tpLocalMedia.Size = new System.Drawing.Size(388, 453);
+            this.tpLocalMedia.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tpLocalMedia.Size = new System.Drawing.Size(339, 351);
             this.tpLocalMedia.TabIndex = 0;
             this.tpLocalMedia.Text = "My PC";
             this.tpLocalMedia.UseVisualStyleBackColor = true;
@@ -73,26 +75,28 @@
             this.tlpPcList.BackColor = System.Drawing.SystemColors.Window;
             this.tlpPcList.ColumnCount = 3;
             this.tlpPcList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpPcList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tlpPcList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tlpPcList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tlpPcList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
             this.tlpPcList.Controls.Add(this.btnRemove, 2, 1);
             this.tlpPcList.Controls.Add(this.btnAdd, 1, 1);
             this.tlpPcList.Controls.Add(this.lvPcList, 0, 0);
             this.tlpPcList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpPcList.Location = new System.Drawing.Point(3, 3);
+            this.tlpPcList.Location = new System.Drawing.Point(3, 2);
+            this.tlpPcList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tlpPcList.Name = "tlpPcList";
             this.tlpPcList.RowCount = 2;
             this.tlpPcList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpPcList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tlpPcList.Size = new System.Drawing.Size(382, 447);
+            this.tlpPcList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            this.tlpPcList.Size = new System.Drawing.Size(333, 347);
             this.tlpPcList.TabIndex = 0;
             // 
             // btnRemove
             // 
             this.btnRemove.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnRemove.Location = new System.Drawing.Point(305, 410);
+            this.btnRemove.Location = new System.Drawing.Point(266, 317);
+            this.btnRemove.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(74, 34);
+            this.btnRemove.Size = new System.Drawing.Size(64, 28);
             this.btnRemove.TabIndex = 1;
             this.btnRemove.Text = "Remove";
             this.btnRemove.UseVisualStyleBackColor = true;
@@ -101,9 +105,10 @@
             // btnAdd
             // 
             this.btnAdd.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAdd.Location = new System.Drawing.Point(225, 410);
+            this.btnAdd.Location = new System.Drawing.Point(196, 317);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(74, 34);
+            this.btnAdd.Size = new System.Drawing.Size(64, 28);
             this.btnAdd.TabIndex = 0;
             this.btnAdd.Text = "Add";
             this.btnAdd.UseVisualStyleBackColor = true;
@@ -116,9 +121,12 @@
             this.chFileDir});
             this.tlpPcList.SetColumnSpan(this.lvPcList, 3);
             this.lvPcList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lvPcList.Location = new System.Drawing.Point(3, 3);
+            this.lvPcList.FullRowSelect = true;
+            this.lvPcList.HideSelection = false;
+            this.lvPcList.Location = new System.Drawing.Point(3, 2);
+            this.lvPcList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lvPcList.Name = "lvPcList";
-            this.lvPcList.Size = new System.Drawing.Size(376, 401);
+            this.lvPcList.Size = new System.Drawing.Size(327, 311);
             this.lvPcList.TabIndex = 2;
             this.lvPcList.UseCompatibleStateImageBehavior = false;
             this.lvPcList.View = System.Windows.Forms.View.Details;
@@ -127,7 +135,7 @@
             // chFileName
             // 
             this.chFileName.Text = "Name";
-            this.chFileName.Width = 86;
+            this.chFileName.Width = 150;
             // 
             // chFileDir
             // 
@@ -139,9 +147,10 @@
             // 
             this.tpStream.Controls.Add(this.lbStreamList);
             this.tpStream.Location = new System.Drawing.Point(4, 54);
+            this.tpStream.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tpStream.Name = "tpStream";
-            this.tpStream.Padding = new System.Windows.Forms.Padding(3);
-            this.tpStream.Size = new System.Drawing.Size(388, 453);
+            this.tpStream.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tpStream.Size = new System.Drawing.Size(338, 351);
             this.tpStream.TabIndex = 1;
             this.tpStream.Text = "Stream";
             this.tpStream.UseVisualStyleBackColor = true;
@@ -150,22 +159,25 @@
             // 
             this.lbStreamList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbStreamList.FormattingEnabled = true;
-            this.lbStreamList.ItemHeight = 15;
-            this.lbStreamList.Location = new System.Drawing.Point(3, 3);
+            this.lbStreamList.ItemHeight = 12;
+            this.lbStreamList.Location = new System.Drawing.Point(3, 2);
+            this.lbStreamList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lbStreamList.Name = "lbStreamList";
-            this.lbStreamList.Size = new System.Drawing.Size(382, 447);
+            this.lbStreamList.Size = new System.Drawing.Size(332, 347);
             this.lbStreamList.TabIndex = 0;
             // 
             // MyMediaList
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(406, 521);
+            this.ClientSize = new System.Drawing.Size(355, 417);
             this.Controls.Add(this.tabMediaList);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MyMediaList";
-            this.Padding = new System.Windows.Forms.Padding(5);
-            this.Text = "MyMediaList";
+            this.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Text = "s";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MyMediaList_FormClosing);
             this.tabMediaList.ResumeLayout(false);
             this.tpLocalMedia.ResumeLayout(false);
             this.tlpPcList.ResumeLayout(false);

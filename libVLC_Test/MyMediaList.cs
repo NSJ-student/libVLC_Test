@@ -39,6 +39,28 @@ namespace libVLC_Test
             PlayMedia = null;
         }
 
+        public void playNext(string current_path)
+        {
+            string current_file_name = Path.GetFileName(current_path);
+
+            ListViewItem item = lvPcList.FindItemWithText(current_file_name);
+
+            if(item != null)
+            {
+                int index = lvPcList.Items.IndexOf(item);
+                int next_index = index + 1;
+
+                if(lvPcList.Items.Count <= next_index)
+                {
+                    next_index = 0;
+                }
+
+                string fullPath = Path.Combine(lvPcList.Items[next_index].SubItems[1].Text,
+                                               lvPcList.Items[next_index].SubItems[0].Text);
+                PlayMedia(fullPath);
+            }
+        }
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
@@ -63,7 +85,6 @@ namespace libVLC_Test
                 {
                     lvPcList.Items.Remove(item);
                 }
-                
             }
         }
 
@@ -83,6 +104,12 @@ namespace libVLC_Test
                     PlayMedia(fullPath);
                 }
             }
+        }
+
+        private void MyMediaList_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
         }
     }
 }
