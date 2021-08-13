@@ -16,6 +16,7 @@ namespace libVLC_Test
     public partial class MyMediaList : Form
     {
         StartMediaPlay PlayMedia;
+        bool _FormLock;
 
         public string CurrentPath
         {
@@ -29,6 +30,28 @@ namespace libVLC_Test
                 else
                 {
                     return "";
+                }
+            }
+        }
+
+        public bool FormLock 
+        { 
+            get
+            {
+                return _FormLock;
+            }
+            set
+            {
+                if (value)
+                {
+                    int target = this.Owner.Left + this.Owner.Width;
+                    this.Left = target;
+                    this.Top = this.Owner.Top;
+                    _FormLock = true;
+                }
+                else
+                {
+                    _FormLock = false;
                 }
             }
         }
@@ -108,8 +131,28 @@ namespace libVLC_Test
 
         private void MyMediaList_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = true;
-            this.Hide();
+            if(e.CloseReason != CloseReason.FormOwnerClosing)
+            {
+                e.Cancel = true;
+                this.Hide();
+            }
+        }
+
+        private void MyMediaList_Move(object sender, EventArgs e)
+        {
+            int target = this.Owner.Left + this.Owner.Width;
+            if ((this.Left <= target+30) && (this.Left >= target - 30))
+            {
+                if ((this.Top >= this.Owner.Top - 30) && (this.Top <= this.Owner.Top + 30))
+                {
+                    this.Left = target;
+                    this.Top = this.Owner.Top;
+                    _FormLock = true;
+                    return;
+                }
+            }
+
+            _FormLock = false;
         }
     }
 }

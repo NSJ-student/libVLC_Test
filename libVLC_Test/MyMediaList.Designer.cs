@@ -150,7 +150,7 @@
             this.tpStream.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tpStream.Name = "tpStream";
             this.tpStream.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tpStream.Size = new System.Drawing.Size(338, 351);
+            this.tpStream.Size = new System.Drawing.Size(339, 351);
             this.tpStream.TabIndex = 1;
             this.tpStream.Text = "Stream";
             this.tpStream.UseVisualStyleBackColor = true;
@@ -163,7 +163,7 @@
             this.lbStreamList.Location = new System.Drawing.Point(3, 2);
             this.lbStreamList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lbStreamList.Name = "lbStreamList";
-            this.lbStreamList.Size = new System.Drawing.Size(332, 347);
+            this.lbStreamList.Size = new System.Drawing.Size(333, 347);
             this.lbStreamList.TabIndex = 0;
             // 
             // MyMediaList
@@ -175,9 +175,11 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MyMediaList";
-            this.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.Text = "s";
+            this.Padding = new System.Windows.Forms.Padding(4);
+            this.ShowInTaskbar = false;
+            this.Text = "List";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MyMediaList_FormClosing);
+            this.Move += new System.EventHandler(this.MyMediaList_Move);
             this.tabMediaList.ResumeLayout(false);
             this.tpLocalMedia.ResumeLayout(false);
             this.tlpPcList.ResumeLayout(false);

@@ -62,6 +62,7 @@ namespace libVLC_Test
 
             list = new MyMediaList();
             list.SetPlayCallBack(PlayMedia);
+            list.Owner = this;
             list.Hide();
 
             tbVideoPosition.Maximum = 10000;
@@ -183,6 +184,7 @@ namespace libVLC_Test
             else
             {
                 list.Show();
+                list.FormLock = true;
             }
         }
 
@@ -241,23 +243,30 @@ namespace libVLC_Test
                 if(arg != 0)
                 {
                     this.Invoke(new Action(delegate () {
-                        tbVideoPosition.Value = CurrentPercent;
-
-                        if ((arg & (int)ProgressUpdate.TotalUpdate) == (int)ProgressUpdate.TotalUpdate)
+                        try
                         {
-                            lblTotalTime.Text = TotalTime.ToString(@"hh\:mm\:ss");
-                            tbVideoPosition.Maximum = Convert.ToInt32(TotalTime.TotalSeconds);
-                        }
-
-                        if ((arg & (int)ProgressUpdate.CurrentUpdate) == (int)ProgressUpdate.CurrentUpdate)
-                        {
-                            lblCurrTime.Text = element.Time.ToString(@"hh\:mm\:ss");
                             tbVideoPosition.Value = CurrentPercent;
-                        }
 
-                        if ((arg & (int)ProgressUpdate.StateUpdate) == (int)ProgressUpdate.StateUpdate)
+                            if ((arg & (int)ProgressUpdate.TotalUpdate) == (int)ProgressUpdate.TotalUpdate)
+                            {
+                                lblTotalTime.Text = TotalTime.ToString(@"hh\:mm\:ss");
+                                tbVideoPosition.Maximum = Convert.ToInt32(TotalTime.TotalSeconds);
+                            }
+
+                            if ((arg & (int)ProgressUpdate.CurrentUpdate) == (int)ProgressUpdate.CurrentUpdate)
+                            {
+                                lblCurrTime.Text = element.Time.ToString(@"hh\:mm\:ss");
+                                tbVideoPosition.Value = CurrentPercent;
+                            }
+
+                            if ((arg & (int)ProgressUpdate.StateUpdate) == (int)ProgressUpdate.StateUpdate)
+                            {
+                                lblState.Text = element.strState;
+                            }
+                        }
+                        catch
                         {
-                            lblState.Text = element.strState;
+
                         }
                     }));
                 }
@@ -414,5 +423,18 @@ namespace libVLC_Test
             }
             SaveInit();
         }
+
+        private void Form1_Move(object sender, EventArgs e)
+        {
+            if (list.Visible)
+            {
+                if (list.FormLock)
+                {
+                    list.Left = this.Left + this.Width;
+                    list.Top = this.Top;
+                }
+            }
+        }
+
     }
 }
